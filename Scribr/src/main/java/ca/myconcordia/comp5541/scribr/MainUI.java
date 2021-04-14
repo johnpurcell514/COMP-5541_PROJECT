@@ -7,15 +7,25 @@ package ca.myconcordia.comp5541.scribr;
 
 import ca.myconcordia.comp5541.scribr.db.DatabaseConnection;
 import java.sql.Connection;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import java.awt.Component;
+import java.util.Scanner;
+import java.io.FileReader;
 
 /**
  *
  * @author sarsingh
  */
 public class MainUI extends javax.swing.JFrame {
-    
+
     private static Connection connection = DatabaseConnection.getConnection();
-    
+
     /**
      * Creates new form MainUI
      */
@@ -159,6 +169,11 @@ public class MainUI extends javax.swing.JFrame {
 
         FileMenuOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         FileMenuOpen.setText("Open");
+        FileMenuOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FileMenuOpenActionPerformed(evt);
+            }
+        });
         FileMenu.add(FileMenuOpen);
 
         FileMenuSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -345,16 +360,32 @@ public class MainUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void FileMenuNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuNewActionPerformed
-        // TODO add your handling code here:
+        jTextArea1.setText("");
+
     }//GEN-LAST:event_FileMenuNewActionPerformed
 
     private void FileMenuQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuQuitActionPerformed
-        // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_FileMenuQuitActionPerformed
 
     private void FileMenuSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuSaveActionPerformed
-        // TODO add your handling code here:
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setDialogTitle("Choose destination.");
+        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        jfc.showSaveDialog(null);
+        try {
+            File f = new File(jfc.getSelectedFile().getAbsolutePath());
+            FileWriter out = new FileWriter(f);
+            out.write(jTextArea1.getText());
+            out.close();
+        } catch (FileNotFoundException ex) {
+            Component f = null;
+            JOptionPane.showMessageDialog(f, "File not found.");
+        } catch (IOException ex) {
+            Component f = null;
+            JOptionPane.showMessageDialog(f, "Error.");
+        }
     }//GEN-LAST:event_FileMenuSaveActionPerformed
 
     private void InsertMenuNewChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertMenuNewChapterActionPerformed
@@ -383,8 +414,31 @@ public class MainUI extends javax.swing.JFrame {
 
     private void ComboBoxWordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxWordsActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_ComboBoxWordsActionPerformed
+
+    private void FileMenuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuOpenActionPerformed
+        String ingest = null;
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setDialogTitle("Choose destination.");
+        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+
+        int returnValue = jfc.showOpenDialog(null);
+        
+        if(returnValue == JFileChooser.APPROVE_OPTION){
+            File f = new File(jfc.getSelectedFile().getAbsolutePath());
+            try {
+                FileReader read = new FileReader(f);
+                Scanner scan = new Scanner(read);
+                while (scan.hasNextLine()) {
+                    String line = scan.nextLine() + "\n";
+                    ingest = ingest + line;
+                }
+                jTextArea1.setText(ingest);
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+    }//GEN-LAST:event_FileMenuOpenActionPerformed
 
     /**
      * @param args the command line arguments
