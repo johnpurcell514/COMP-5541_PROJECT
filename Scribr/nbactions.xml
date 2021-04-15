@@ -12,7 +12,7 @@
             <properties>
                 <exec.args>-classpath %classpath ca.myconcordia.comp5541.scribr.MainUI</exec.args>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>/home/sarsingh/NetBeansProjects/Scribr</exec.workingdir>
+                <exec.workingdir>System.getProperty("user.dir"));</exec.workingdir>
             </properties>
         </action>
         <action>
