@@ -7,7 +7,7 @@ ca/myconcordia/comp5541/scribr/MainUI$8.class
 ca/myconcordia/comp5541/scribr/MainUI.class
 ca/myconcordia/comp5541/scribr/models/SentenceWords.class
 ca/myconcordia/comp5541/scribr/models/Words.class
-ca/myconcordia/comp5541/scribr/db/DbInstance.class
+ca/myconcordia/comp5541/scribr/db/DatabaseConnection.class
 ca/myconcordia/comp5541/scribr/MainUI$3.class
 ca/myconcordia/comp5541/scribr/MainUI$4.class
 ca/myconcordia/comp5541/scribr/models/Operations.class
