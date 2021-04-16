@@ -18,7 +18,7 @@ import javax.swing.ListCellRenderer;
  * @author sarsingh
  */
 public class CheckComboRenderer implements ListCellRenderer {
-  private JCheckBox checkBox;
+  JCheckBox checkBox;
 
   public CheckComboRenderer() {
     checkBox = new JCheckBox();

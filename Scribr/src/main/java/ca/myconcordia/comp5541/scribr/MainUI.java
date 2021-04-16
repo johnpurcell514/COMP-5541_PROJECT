@@ -438,6 +438,7 @@ public class MainUI extends javax.swing.JFrame {
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
+        }
     }//GEN-LAST:event_FileMenuOpenActionPerformed
 
     /**
@@ -464,6 +465,8 @@ public class MainUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } finally {
+            
         }
         //</editor-fold>
 

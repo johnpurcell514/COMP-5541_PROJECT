@@ -56,9 +56,10 @@ public class SentenceWords {
     private int sentenceId;
     private int wordId;
     private Words[] words;
-    public SentenceWords(int sentenceWordId, int sentenceId, int wordId){
+    public SentenceWords(int sentenceWordId, int sentenceId, int wordId, Words[] words){
         this.sentenceWordId = sentenceWordId;
         this.sentenceId = sentenceId;
         this.wordId = wordId;
+        this.words = words;
     }
 }
