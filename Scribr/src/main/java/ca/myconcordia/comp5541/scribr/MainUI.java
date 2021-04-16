@@ -756,6 +756,7 @@ public class MainUI extends javax.swing.JFrame {
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
+        }
     }//GEN-LAST:event_FileMenuOpenActionPerformed
 
     /**
