@@ -79,28 +79,6 @@
                 <Property name="text" type="java.lang.String" value="New Section"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="InsertMenuNewSubsection">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+Ctrl+B"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="New Subsection"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InsertMenuNewSubsectionActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="InsertMenuNewParagraph">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+Ctrl+P"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="New Paragraph"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InsertMenuNewParagraphActionPerformed"/>
-              </Events>
-            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="UndoMenu">
@@ -140,14 +118,6 @@
                 <Property name="text" type="java.lang.String" value="Last Section Edit"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="UndoMenuLastSubsectionEdit">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+Alt+B"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Last Subsection Edit"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="UndoMenuLastParagraphEdit">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
@@ -182,11 +152,6 @@
             <MenuItem class="javax.swing.JMenuItem" name="UndoMenuAllSectionEdits">
               <Properties>
                 <Property name="text" type="java.lang.String" value="All Section Edits"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="UndoMenuAllPageEdits">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="All Page Edits"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="UndoMenuAllParagraphEdits">
@@ -229,11 +194,6 @@
             <MenuItem class="javax.swing.JMenuItem" name="DeleteMenuAllSectionEdits">
               <Properties>
                 <Property name="text" type="java.lang.String" value="All Section Edits"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="DeleteMenuAllSubsectionEdits">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="All Subsection Edits"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="DeleteMenuAllParagraphEdits">
@@ -316,15 +276,9 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Component id="jScrollPane1" min="-2" pref="647" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="jScrollPane1" alignment="0" pref="516" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <Component id="jScrollPane2" min="-2" pref="647" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
+              <Component id="jScrollPane2" alignment="0" pref="516" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -358,13 +312,12 @@
                   <Component id="jPanel_WordEdits" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel_SentenceEdits" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel_ParagraphEdits" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jPanel_SubsectionEdits" alignment="1" max="32767" attributes="0"/>
                   <Component id="jPanel_SectionEdits" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jPanel_ChapterEdits5" alignment="1" max="32767" attributes="0"/>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <Component id="jLabel_RecentEdits" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
+                  <Component id="jPanel_ChapterEdits" alignment="1" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -377,13 +330,11 @@
                       <Component id="jPanel_SentenceEdits" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel_ParagraphEdits" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jPanel_SubsectionEdits" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanel_SectionEdits" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel_ChapterEdits5" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                      <Component id="jPanel_ChapterEdits" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -574,7 +525,7 @@
                               </Group>
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jCheckBox12" alignment="1" pref="323" max="32767" attributes="0"/>
+                                      <Component id="jCheckBox12" alignment="1" pref="343" max="32767" attributes="0"/>
                                       <Component id="jCheckBox11" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jCheckBox13" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jCheckBox14" alignment="1" max="32767" attributes="0"/>
@@ -635,87 +586,6 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="jCheckBox15">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jCheckBox1"/>
-                  </Properties>
-                </Component>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel_SubsectionEdits">
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel_Subsections" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jCheckBox17" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox16" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox18" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox19" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox20" alignment="1" max="32767" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel_Subsections" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jCheckBox17" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox16" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox18" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox19" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox20" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="8" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
-              <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel_Subsections">
-                  <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="12" style="1"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Subsections"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox16">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jCheckBox1"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox17">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jCheckBox1"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox18">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jCheckBox1"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox19">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jCheckBox1"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox20">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jCheckBox1"/>
                   </Properties>
@@ -803,25 +673,25 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jPanel_ChapterEdits5">
+            <Container class="javax.swing.JPanel" name="jPanel_ChapterEdits">
 
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel_Chapters" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel_Sections1" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jCheckBox27" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox26" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox28" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox29" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="jCheckBox30" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="jCheckBox32" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="jCheckBox31" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="jCheckBox33" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="jCheckBox34" alignment="1" max="32767" attributes="0"/>
+                                      <Component id="jCheckBox35" alignment="1" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
@@ -832,24 +702,24 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabel_Chapters" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel_Sections1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="jCheckBox27" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox32" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox26" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox31" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox28" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox33" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox29" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox34" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jCheckBox30" min="-2" max="-2" attributes="0"/>
+                          <Component id="jCheckBox35" min="-2" max="-2" attributes="0"/>
                           <EmptySpace pref="8" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JLabel" name="jLabel_Chapters">
+                <Component class="javax.swing.JLabel" name="jLabel_Sections1">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="12" style="1"/>
@@ -857,27 +727,27 @@
                     <Property name="text" type="java.lang.String" value="Chapters"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox26">
+                <Component class="javax.swing.JCheckBox" name="jCheckBox31">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jCheckBox1"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox27">
+                <Component class="javax.swing.JCheckBox" name="jCheckBox32">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jCheckBox1"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox28">
+                <Component class="javax.swing.JCheckBox" name="jCheckBox33">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jCheckBox1"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox29">
+                <Component class="javax.swing.JCheckBox" name="jCheckBox34">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jCheckBox1"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JCheckBox" name="jCheckBox30">
+                <Component class="javax.swing.JCheckBox" name="jCheckBox35">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jCheckBox1"/>
                   </Properties>
