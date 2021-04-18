@@ -18,6 +18,12 @@ import java.awt.Component;
 import java.util.Scanner;
 import java.io.FileReader;
 
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sarsingh
@@ -485,12 +491,27 @@ public class MainUI extends javax.swing.JFrame {
         HelpMenu.setText("Help");
 
         HelpMenuScribrManual.setText("Scribr Manual");
+        HelpMenuScribrManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HelpMenuScribrManualActionPerformed(evt);
+            }
+        });
         HelpMenu.add(HelpMenuScribrManual);
 
         HelpMenuFAQ.setText("FAQ");
+        HelpMenuFAQ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HelpMenuFAQActionPerformed(evt);
+            }
+        });
         HelpMenu.add(HelpMenuFAQ);
 
         HelpMenuReportBug.setText("Report A Bug");
+        HelpMenuReportBug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HelpMenuReportBugActionPerformed(evt);
+            }
+        });
         HelpMenu.add(HelpMenuReportBug);
 
         MainMenuBar.add(HelpMenu);
@@ -512,13 +533,9 @@ public class MainUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE))
         );
 
         pack();
@@ -576,8 +593,8 @@ public class MainUI extends javax.swing.JFrame {
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         int returnValue = jfc.showOpenDialog(null);
-        
-        if(returnValue == JFileChooser.APPROVE_OPTION){
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
             File f = new File(jfc.getSelectedFile().getAbsolutePath());
             try {
                 FileReader read = new FileReader(f);
@@ -592,6 +609,26 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_FileMenuOpenActionPerformed
+
+    private void HelpMenuScribrManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuScribrManualActionPerformed
+        Desktop desktop = java.awt.Desktop.getDesktop();
+        try {
+            URI oURL = new URI("https://www.google.com");
+            desktop.browse(oURL);
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_HelpMenuScribrManualActionPerformed
+
+    private void HelpMenuFAQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuFAQActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HelpMenuFAQActionPerformed
+
+    private void HelpMenuReportBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuReportBugActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HelpMenuReportBugActionPerformed
 
     /**
      * @param args the command line arguments
@@ -618,7 +655,7 @@ public class MainUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } finally {
-            
+
         }
         //</editor-fold>
 
