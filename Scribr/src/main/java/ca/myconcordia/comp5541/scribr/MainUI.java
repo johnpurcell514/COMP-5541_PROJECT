@@ -114,7 +114,6 @@ public class MainUI extends javax.swing.JFrame {
         DeleteMenuAllSentenceEdits = new javax.swing.JMenuItem();
         DeleteMenuAllWordEdits = new javax.swing.JMenuItem();
         HelpMenu = new javax.swing.JMenu();
-        HelpMenuScribrManual = new javax.swing.JMenuItem();
         HelpMenuFAQ = new javax.swing.JMenuItem();
         HelpMenuReportBug = new javax.swing.JMenuItem();
 
@@ -490,14 +489,6 @@ public class MainUI extends javax.swing.JFrame {
 
         HelpMenu.setText("Help");
 
-        HelpMenuScribrManual.setText("Scribr Manual");
-        HelpMenuScribrManual.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HelpMenuScribrManualActionPerformed(evt);
-            }
-        });
-        HelpMenu.add(HelpMenuScribrManual);
-
         HelpMenuFAQ.setText("FAQ");
         HelpMenuFAQ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -609,18 +600,6 @@ public class MainUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_FileMenuOpenActionPerformed
 
-    private void HelpMenuScribrManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuScribrManualActionPerformed
-        Desktop desktop = java.awt.Desktop.getDesktop();
-        try {
-            URI oURL = new URI("https://www.google.com");
-            desktop.browse(oURL);
-        } catch (IOException ex) {
-            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }//GEN-LAST:event_HelpMenuScribrManualActionPerformed
-
     private void HelpMenuFAQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuFAQActionPerformed
              Desktop desktop = java.awt.Desktop.getDesktop();
         try {
@@ -698,7 +677,6 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenu HelpMenu;
     private javax.swing.JMenuItem HelpMenuFAQ;
     private javax.swing.JMenuItem HelpMenuReportBug;
-    private javax.swing.JMenuItem HelpMenuScribrManual;
     private javax.swing.JMenu InsertMenu;
     private javax.swing.JMenuItem InsertMenuNewChapter;
     private javax.swing.JMenuItem InsertMenuNewSection;
