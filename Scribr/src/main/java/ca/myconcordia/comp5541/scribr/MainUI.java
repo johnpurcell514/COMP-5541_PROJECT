@@ -524,18 +524,17 @@ public class MainUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(350, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(707, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap()))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -623,11 +622,27 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_HelpMenuScribrManualActionPerformed
 
     private void HelpMenuFAQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuFAQActionPerformed
-        // TODO add your handling code here:
+             Desktop desktop = java.awt.Desktop.getDesktop();
+        try {
+            URI oURL = new URI("https://htmlpreview.github.io/?https://github.com/johnpurcell514/COMP-5541_PROJECT/blob/main/SUPPORT/index.html");
+            desktop.browse(oURL);
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_HelpMenuFAQActionPerformed
 
     private void HelpMenuReportBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuReportBugActionPerformed
-        // TODO add your handling code here:
+         Desktop desktop = java.awt.Desktop.getDesktop();
+        try {
+            URI oURL = new URI("https://htmlpreview.github.io/?https://github.com/johnpurcell514/COMP-5541_PROJECT/blob/main/SUPPORT/EmailSupport.html");
+            desktop.browse(oURL);
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }//GEN-LAST:event_HelpMenuReportBugActionPerformed
 
     /**
