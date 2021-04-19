@@ -4,3 +4,4 @@
 .settings/
 target/
 nbactions.xml
+data.db

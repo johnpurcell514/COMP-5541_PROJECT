@@ -15,8 +15,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.util.Scanner;
 import java.io.FileReader;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -24,7 +27,7 @@ import java.io.FileReader;
  */
 public class MainUI extends javax.swing.JFrame {
 
-    private static Connection connection = DatabaseConnection.getConnection();
+    private static Connection connection;
 
     /**
      * Creates new form MainUI
@@ -99,6 +102,11 @@ public class MainUI extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
+        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextArea1KeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextArea1);
 
         ComboBoxWords.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Words" }));
@@ -358,7 +366,17 @@ public class MainUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void databaseNoReturnValue(Connection conn, String query){
+                
+        try (Statement stmt = conn.createStatement();) {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void FileMenuNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuNewActionPerformed
         jTextArea1.setText("");
 
@@ -390,6 +408,8 @@ public class MainUI extends javax.swing.JFrame {
 
     private void InsertMenuNewChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertMenuNewChapterActionPerformed
         // TODO add your handling code here:
+        String s = jTextArea1.getSelectedText();
+        System.out.println(s);
     }//GEN-LAST:event_InsertMenuNewChapterActionPerformed
 
     private void InsertMenuNewSubsectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertMenuNewSubsectionActionPerformed
@@ -402,6 +422,8 @@ public class MainUI extends javax.swing.JFrame {
 
     private void UndoMenuSelectedEditsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuSelectedEditsActionPerformed
         // TODO add your handling code here:
+        System.out.println("hello i am here");
+        databaseNoReturnValue(MainUI.connection, "select * from constructs;");
     }//GEN-LAST:event_UndoMenuSelectedEditsActionPerformed
 
     private void UndoMenuLastChapterEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuLastChapterEditActionPerformed
@@ -416,7 +438,8 @@ public class MainUI extends javax.swing.JFrame {
         // TODO add your handling code here:
 
     }//GEN-LAST:event_ComboBoxWordsActionPerformed
-
+    // custom handler to handle all BACKSPACE and DELETE events in the application
+    
     private void FileMenuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuOpenActionPerformed
         String ingest = null;
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -440,11 +463,25 @@ public class MainUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_FileMenuOpenActionPerformed
+    // custom handler to add actions to BACKSPACE and DELETE keys
+    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed
+        // TODO add your handling code here:
+        switch(evt.getKeyCode()){
+            case KeyEvent.VK_BACK_SPACE:
+                System.out.println("backspace pressed");
+                break;
+            case KeyEvent.VK_DELETE:
+                System.out.println("delete pressed");
+                break;
+        }
+    }//GEN-LAST:event_jTextArea1KeyPressed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        /* initialize the database */
+         MainUI.connection = DatabaseConnection.getConnection();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
