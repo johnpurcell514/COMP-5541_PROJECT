@@ -19,6 +19,8 @@ import java.util.Scanner;
 import java.io.FileReader;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 
 import java.awt.Desktop;
 import java.net.URI;
@@ -538,9 +540,46 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void databaseNoReturnValue(Connection conn, String query){
-                
         try (Statement stmt = conn.createStatement();) {
             stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private String databaseReturnString(Connection conn, String query, 
+                                        String colName){
+        try (Statement stmt = conn.createStatement();) {
+            ResultSet rs = stmt.executeQuery(query);
+            try {
+                while (rs.next()) {
+                    String val = rs.getString(colName);
+                    return val;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+     private int databaseReturnInt(Connection conn, String query, 
+                                   String colName){
+        try (Statement stmt = conn.createStatement();) {
+            ResultSet rs = stmt.executeQuery(query);
+            try {
+                while (rs.next()) {
+                    int val = rs.getInt(colName);
+                    return val;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -577,21 +616,113 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     }//GEN-LAST:event_FileMenuSaveActionPerformed
 
     private void InsertMenuNewChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertMenuNewChapterActionPerformed
-        // TODO add your handling code here:
+        // get the text of the chapter
         String s = jTextArea1.getSelectedText();
-        System.out.println(s);
+        // get operationId
+        String query1 = "select * from operationTypes where operationType = 'insert'";
+        int operationTypeId = databaseReturnInt(MainUI.connection, query1, "operationTypeId");
+        String query2 = "select * from constructs where constructType = 'chapter'";
+        int constructId = databaseReturnInt(MainUI.connection, query2, "constructId");
+        String query3 = "insert into operations (operationTypeId, constructId) values"
+                       + "(" + operationTypeId + "," + constructId + ")";
+        databaseNoReturnValue(MainUI.connection, query3);
+        String query4 = "select * from operations order by createdAt desc limit 1;";
+        int operationId = databaseReturnInt(MainUI.connection, query4, "operationId");
+        // insert chapter
+        String query5 = "insert into chapters (operationId, newValue) values"
+                       + "(" + operationId + ", \'" + s + "\');";
+        System.out.println(query5);
+        databaseNoReturnValue(MainUI.connection, query5);
     }//GEN-LAST:event_InsertMenuNewChapterActionPerformed
-
+    
+    private void InsertMenuNewSectionActionPerformed(java.awt.event.ActionEvent evt) {                                                     
+        // get the text of the section
+        String s = jTextArea1.getSelectedText();
+        // get operationId
+        String query1 = "select * from operationTypes where operationType = 'insert'";
+        int operationTypeId = databaseReturnInt(MainUI.connection, query1, "operationTypeId");
+        String query2 = "select * from constructs where constructType = 'section'";
+        int constructId = databaseReturnInt(MainUI.connection, query2, "constructId");
+        String query3 = "insert into operations (operationTypeId, constructId) values"
+                       + "(" + operationTypeId + "," + constructId + ")";
+        databaseNoReturnValue(MainUI.connection, query3);
+        String query4 = "select * from operations order by createdAt desc limit 1;";
+        int operationId = databaseReturnInt(MainUI.connection, query4, "operationId");
+        // insert section
+        // HOW TO FIND THE Chapter of the section?
+        String query5 = "insert into sections (operationId, newValue) values"
+                       + "(" + operationId + ", \'" + s + "\');";
+        System.out.println(query5);
+        databaseNoReturnValue(MainUI.connection, query5);
+        System.out.println("hi im dunya");
+    } 
+    
     private void UndoMenuSelectedEditsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuSelectedEditsActionPerformed
-        // TODO add your handling code here:
         System.out.println("hello i am here");
-        databaseNoReturnValue(MainUI.connection, "select * from constructs;");
+        // NEED TO FIND OUT HOW TO KNOW WHICH BOXES WERE CHECKED !!!
+        String query = "select * from constructs where constructType = 'word'";
+        String s = databaseReturnString(MainUI.connection, query, "constructType");
+        System.out.println(s);
     }//GEN-LAST:event_UndoMenuSelectedEditsActionPerformed
 
     private void UndoMenuLastChapterEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuLastChapterEditActionPerformed
-        // TODO add your handling code here:
+        // find last chapter edit
+        String query1 = "select c.* from chapters c left join operations o on " 
+                      + "c.operationId = o.operationId order by o.createdAt desc limit 1";
+        int operationId = databaseReturnInt(MainUI.connection, query1, "operationId");
+        int chapterId = databaseReturnInt(MainUI.connection, query1, "chapterId");
+        // find the sections in the chapter
+        String query2 = "select * from sections where chapterId = " + chapterId;
+        int sectionId = databaseReturnInt(MainUI.connection, query2, "sectionId");
+        System.out.println(sectionId);
+        // find the paragraphs in the chapter
+        String query3 = "select * from paragraphs where sectionId IN (" + sectionId + ")";
+        int paragraphId = databaseReturnInt(MainUI.connection, query3, "paragraphId");
+        // find the sentences in the chapter 
+        String query4 = "select * from sentences where paragraphId IN (" + paragraphId + ")";
+        int sentenceId = databaseReturnInt(MainUI.connection, query4, "sentenceId");
+        // find the words in the chapter
+        String query5 = "select * from words where sentenceId IN (" + sentenceId + ")";
+        int wordId = databaseReturnInt(MainUI.connection, query4, "wordId");
+        
+//        if exists(wordId) {
+//            String query6 = "delete from words where wordId = " + wordId;
+//            databaseNoReturnValue(MainUI.connection, query6);
+//        }
+//        
+//        if sentenceId {
+//            String query7 = "delete from sentences where sentenceId = " + sentenceId;
+//            databaseNoReturnValue(MainUI.connection, query7);
+//        }
+//        
+//        if paragraphId {
+//            String query8 = "delete from paragraphs where paragraphId = " + paragraphId;
+//            databaseNoReturnValue(MainUI.connection, query8);
+//        }
+//        
+//        if sectionId {
+//            String query9 = "delete from sections where sectionId = " + sectionId;
+//            databaseNoReturnValue(MainUI.connection, query9);
+//        }
+//        
+//        String query10 = "delete from chapters where chapterId = " + chapterId;
+//        databaseNoReturnValue(MainUI.connection, query10);
     }//GEN-LAST:event_UndoMenuLastChapterEditActionPerformed
+    
+     private void UndoMenuLastSectionEditActionPerformed(java.awt.event.ActionEvent evt) {                                                        
+        // find last section edit
+        String query1 = "select * from sections s left join operations s on" 
+                      + "c.operationId = o.operationId order by o.createdAt desc limit 1";
+        int operationId = databaseReturnInt(MainUI.connection, query1, "operationId");
+        int chapterId = databaseReturnInt(MainUI.connection, query1, "sectionId");
+        // delete last chapter edit 
+        String query2 = "delete from chapters where chapterId = " + chapterId;
+        databaseNoReturnValue(MainUI.connection, query2);
+        String query3 = "delete from operations where operationId = " + operationId;
+        databaseNoReturnValue(MainUI.connection, query3);
+    }                                                       
 
+    
     private void DeleteMenuSelectedEditsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMenuSelectedEditsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DeleteMenuSelectedEditsActionPerformed

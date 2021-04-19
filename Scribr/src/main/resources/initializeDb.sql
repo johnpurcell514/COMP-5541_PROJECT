@@ -1,6 +1,14 @@
 PRAGMA foreign_keys = ON;
+DROP TABLE words;
+DROP TABLE sentences;
+DROP TABLE paragraphs;
+DROP TABLE sections;
+DROP TABLE chapters;
+DROP TABLE operations;
+DROP TABLE constructs; 
+DROP TABLE operationtypes;
 
-CREATE TABLE IF NOT EXISTS constructs (
+CREATE TABLE constructs (
   constructId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , constructType TEXT NOT NULL
   , CONSTRAINT constructTypeUnique UNIQUE(constructType)
@@ -9,11 +17,10 @@ CREATE TABLE IF NOT EXISTS constructs (
 INSERT OR REPLACE INTO constructs (constructType) VALUES ('word');
 INSERT OR REPLACE INTO constructs (constructType) VALUES ('sentence');
 INSERT OR REPLACE INTO constructs (constructType) VALUES ('paragraph');
-INSERT OR REPLACE INTO constructs (constructType) VALUES ('subsection');
 INSERT OR REPLACE INTO constructs (constructType) VALUES ('section');
 INSERT OR REPLACE INTO constructs (constructType) VALUES ('chapter');
 
-CREATE TABLE IF NOT EXISTS operationTypes (
+CREATE TABLE operationTypes (
   operationTypeId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , operationType TEXT NOT NULL
   , CONSTRAINT operationTypeUnique UNIQUE(operationType)
@@ -23,16 +30,16 @@ INSERT OR REPLACE INTO operationTypes (operationType) VALUES ('insert');
 INSERT OR REPLACE INTO operationTypes (operationType) VALUES ('update');
 INSERT OR REPLACE INTO operationTypes (operationType) VALUES ('delete');
 
-CREATE TABLE IF NOT EXISTS operations (
+CREATE TABLE operations (
   operationId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , operationTypeId INTEGER NOT NULL
   , constructId INTEGER NOT NULL
-  , createdAt DATETIME NOT NULL DEFAULT NOW
+  , createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
   , FOREIGN KEY(constructId) REFERENCES constructs(constructId)
   , FOREIGN KEY(operationTypeId) REFERENCES operationTypes(operationTypeId)
 );
 
-CREATE TABLE IF NOT EXISTS chapters (
+CREATE TABLE chapters (
   chapterId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , operationId INTEGER NOT NULL
   , chapterName TEXT
@@ -41,7 +48,7 @@ CREATE TABLE IF NOT EXISTS chapters (
   , FOREIGN KEY(operationId) REFERENCES operations(operationId)
 );
 
-CREATE TABLE IF NOT EXISTS sections (
+CREATE TABLE sections (
   sectionId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , operationId INTEGER NOT NULL
   , sectionName TEXT
@@ -52,10 +59,9 @@ CREATE TABLE IF NOT EXISTS sections (
   , FOREIGN KEY(chapterId) REFERENCES sections(chapterId)
 );
 
-CREATE TABLE IF NOT EXISTS subSections (
-  subSectionId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+CREATE TABLE paragraphs (
+  paragraphId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , operationId INTEGER NOT NULL
-  , subSectionName TEXT
   , oldValue TEXT
   , newValue TEXT
   , sectionId INTEGER NOT NULL
@@ -63,17 +69,7 @@ CREATE TABLE IF NOT EXISTS subSections (
   , FOREIGN KEY(sectionId) REFERENCES sections(sectionId)
 );
 
-CREATE TABLE IF NOT EXISTS paragraphs (
-  paragraphId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
-  , operationId INTEGER NOT NULL
-  , oldValue TEXT
-  , newValue TEXT
-  , subSectionId INTEGER NOT NULL
-  , FOREIGN KEY(operationId) REFERENCES operations(operationId)
-  , FOREIGN KEY(subSectionId) REFERENCES subSections(subSectionId)
-);
-
-CREATE TABLE IF NOT EXISTS sentences (
+CREATE TABLE sentences (
   sentenceId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , operationId INTEGER NOT NULL
   , oldValue TEXT
@@ -83,7 +79,7 @@ CREATE TABLE IF NOT EXISTS sentences (
   , FOREIGN KEY(paragraphId) REFERENCES paragraphs(paragraphId)
 );
 
-CREATE TABLE IF NOT EXISTS words (
+CREATE TABLE words (
   wordId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
   , operationId INTEGER NOT NULL
   , oldValue TEXT
