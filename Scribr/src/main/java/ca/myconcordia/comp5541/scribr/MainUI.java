@@ -21,6 +21,12 @@ import java.io.FileReader;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sarsingh
@@ -46,15 +52,39 @@ public class MainUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jPanel2 = new javax.swing.JPanel();
-        ComboBoxWords = new javax.swing.JComboBox<>();
-        ComboBoxSentences = new javax.swing.JComboBox<>();
-        ComboBoxParagraphs = new javax.swing.JComboBox<>();
-        ComboBoxPages = new javax.swing.JComboBox<>();
-        ComboBoxSections = new javax.swing.JComboBox<>();
-        ComboBoxChapters = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
+        jTextArea = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanel_SideMenu = new javax.swing.JPanel();
+        jPanel_WordEdits = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBox4 = new javax.swing.JCheckBox();
+        jCheckBox5 = new javax.swing.JCheckBox();
+        jPanel_SentenceEdits = new javax.swing.JPanel();
+        jCheckBox16 = new javax.swing.JCheckBox();
+        jCheckBox17 = new javax.swing.JCheckBox();
+        jCheckBox18 = new javax.swing.JCheckBox();
+        jCheckBox19 = new javax.swing.JCheckBox();
+        jCheckBox20 = new javax.swing.JCheckBox();
+        jPanel_ParagraphEdits = new javax.swing.JPanel();
+        jCheckBox26 = new javax.swing.JCheckBox();
+        jCheckBox27 = new javax.swing.JCheckBox();
+        jCheckBox28 = new javax.swing.JCheckBox();
+        jCheckBox29 = new javax.swing.JCheckBox();
+        jCheckBox30 = new javax.swing.JCheckBox();
+        jPanel_SectionEdits = new javax.swing.JPanel();
+        jCheckBox36 = new javax.swing.JCheckBox();
+        jCheckBox37 = new javax.swing.JCheckBox();
+        jCheckBox38 = new javax.swing.JCheckBox();
+        jCheckBox39 = new javax.swing.JCheckBox();
+        jCheckBox40 = new javax.swing.JCheckBox();
+        jPanel_ChapterEdits = new javax.swing.JPanel();
+        jCheckBox41 = new javax.swing.JCheckBox();
+        jCheckBox42 = new javax.swing.JCheckBox();
+        jCheckBox43 = new javax.swing.JCheckBox();
+        jCheckBox44 = new javax.swing.JCheckBox();
+        jCheckBox45 = new javax.swing.JCheckBox();
         MainMenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
         FileMenuNew = new javax.swing.JMenuItem();
@@ -64,21 +94,17 @@ public class MainUI extends javax.swing.JFrame {
         InsertMenu = new javax.swing.JMenu();
         InsertMenuNewChapter = new javax.swing.JMenuItem();
         InsertMenuNewSection = new javax.swing.JMenuItem();
-        InsertMenuNewSubsection = new javax.swing.JMenuItem();
-        InsertMenuNewParagraph = new javax.swing.JMenuItem();
         UndoMenu = new javax.swing.JMenu();
         UndoMenuSelectedEdits = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         UndoMenuLastChapterEdit = new javax.swing.JMenuItem();
         UndoMenuLastSectionEdit = new javax.swing.JMenuItem();
-        UndoMenuLastSubsectionEdit = new javax.swing.JMenuItem();
         UndoMenuLastParagraphEdit = new javax.swing.JMenuItem();
         UndoMenuLastSentenceEdit = new javax.swing.JMenuItem();
         UndoMenuLastWordEdit = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         UndoMenuAllChapterEdits = new javax.swing.JMenuItem();
         UndoMenuAllSectionEdits = new javax.swing.JMenuItem();
-        UndoMenuAllPageEdits = new javax.swing.JMenuItem();
         UndoMenuAllParagraphEdits = new javax.swing.JMenuItem();
         UndoMenuAllSentenceEdits = new javax.swing.JMenuItem();
         UndoMenuAllWordEdits = new javax.swing.JMenuItem();
@@ -87,82 +113,237 @@ public class MainUI extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         DeleteMenuAllChapterEdits = new javax.swing.JMenuItem();
         DeleteMenuAllSectionEdits = new javax.swing.JMenuItem();
-        DeleteMenuAllSubsectionEdits = new javax.swing.JMenuItem();
         DeleteMenuAllParagraphEdits = new javax.swing.JMenuItem();
         DeleteMenuAllSentenceEdits = new javax.swing.JMenuItem();
         DeleteMenuAllWordEdits = new javax.swing.JMenuItem();
         HelpMenu = new javax.swing.JMenu();
-        HelpMenuScribrManual = new javax.swing.JMenuItem();
         HelpMenuFAQ = new javax.swing.JMenuItem();
         HelpMenuReportBug = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Scribr");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextArea1KeyPressed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(jTextArea1);
+        jPanel_SideMenu.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "RECENT EDITS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
 
-        ComboBoxWords.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Words" }));
-        ComboBoxWords.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ComboBoxWordsActionPerformed(evt);
-            }
-        });
+        jPanel_WordEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Words", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
-        ComboBoxSentences.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sentences" }));
+        jCheckBox1.setText("jCheckBox1");
 
-        ComboBoxParagraphs.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Paragraphs" }));
+        jCheckBox2.setText("jCheckBox1");
 
-        ComboBoxPages.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pages" }));
+        jCheckBox3.setText("jCheckBox1");
 
-        ComboBoxSections.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sections" }));
+        jCheckBox4.setText("jCheckBox1");
 
-        ComboBoxChapters.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chapters" }));
+        jCheckBox5.setText("jCheckBox1");
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Recent Edits");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel_WordEditsLayout = new javax.swing.GroupLayout(jPanel_WordEdits);
+        jPanel_WordEdits.setLayout(jPanel_WordEditsLayout);
+        jPanel_WordEditsLayout.setHorizontalGroup(
+            jPanel_WordEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel_WordEditsLayout.setVerticalGroup(
+            jPanel_WordEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_WordEditsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ComboBoxWords, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ComboBoxSentences, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ComboBoxParagraphs, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ComboBoxPages, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ComboBoxSections, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ComboBoxChapters, 0, 130, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jCheckBox2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel_SentenceEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sentences", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        jCheckBox16.setText("jCheckBox1");
+
+        jCheckBox17.setText("jCheckBox1");
+
+        jCheckBox18.setText("jCheckBox1");
+
+        jCheckBox19.setText("jCheckBox1");
+
+        jCheckBox20.setText("jCheckBox1");
+
+        javax.swing.GroupLayout jPanel_SentenceEditsLayout = new javax.swing.GroupLayout(jPanel_SentenceEdits);
+        jPanel_SentenceEdits.setLayout(jPanel_SentenceEditsLayout);
+        jPanel_SentenceEditsLayout.setHorizontalGroup(
+            jPanel_SentenceEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jCheckBox16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox18, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel_SentenceEditsLayout.setVerticalGroup(
+            jPanel_SentenceEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_SentenceEditsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox19)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox20)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel_ParagraphEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Paragraphs", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        jCheckBox26.setText("jCheckBox1");
+
+        jCheckBox27.setText("jCheckBox1");
+
+        jCheckBox28.setText("jCheckBox1");
+
+        jCheckBox29.setText("jCheckBox1");
+
+        jCheckBox30.setText("jCheckBox1");
+
+        javax.swing.GroupLayout jPanel_ParagraphEditsLayout = new javax.swing.GroupLayout(jPanel_ParagraphEdits);
+        jPanel_ParagraphEdits.setLayout(jPanel_ParagraphEditsLayout);
+        jPanel_ParagraphEditsLayout.setHorizontalGroup(
+            jPanel_ParagraphEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jCheckBox26, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox27, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox28, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox30, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox29, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel_ParagraphEditsLayout.setVerticalGroup(
+            jPanel_ParagraphEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_ParagraphEditsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox30)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel_SectionEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sections", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        jCheckBox36.setText("jCheckBox1");
+
+        jCheckBox37.setText("jCheckBox1");
+
+        jCheckBox38.setText("jCheckBox1");
+
+        jCheckBox39.setText("jCheckBox1");
+
+        jCheckBox40.setText("jCheckBox1");
+
+        javax.swing.GroupLayout jPanel_SectionEditsLayout = new javax.swing.GroupLayout(jPanel_SectionEdits);
+        jPanel_SectionEdits.setLayout(jPanel_SectionEditsLayout);
+        jPanel_SectionEditsLayout.setHorizontalGroup(
+            jPanel_SectionEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jCheckBox36, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox37, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox38, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox40, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox39, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel_SectionEditsLayout.setVerticalGroup(
+            jPanel_SectionEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_SectionEditsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox38)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox40)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel_ChapterEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Chapters", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        jCheckBox41.setText("jCheckBox1");
+
+        jCheckBox42.setText("jCheckBox1");
+
+        jCheckBox43.setText("jCheckBox1");
+
+        jCheckBox44.setText("jCheckBox1");
+
+        jCheckBox45.setText("jCheckBox1");
+
+        javax.swing.GroupLayout jPanel_ChapterEditsLayout = new javax.swing.GroupLayout(jPanel_ChapterEdits);
+        jPanel_ChapterEdits.setLayout(jPanel_ChapterEditsLayout);
+        jPanel_ChapterEditsLayout.setHorizontalGroup(
+            jPanel_ChapterEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jCheckBox41, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+            .addComponent(jCheckBox42, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox43, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox45, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox44, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel_ChapterEditsLayout.setVerticalGroup(
+            jPanel_ChapterEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_ChapterEditsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jCheckBox42)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox41)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox43)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox44)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox45)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel_SideMenuLayout = new javax.swing.GroupLayout(jPanel_SideMenu);
+        jPanel_SideMenu.setLayout(jPanel_SideMenuLayout);
+        jPanel_SideMenuLayout.setHorizontalGroup(
+            jPanel_SideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_SideMenuLayout.createSequentialGroup()
+                .addGroup(jPanel_SideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel_SectionEdits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel_ParagraphEdits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel_SentenceEdits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel_WordEdits, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel_ChapterEdits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(10, 10, 10)
-                .addComponent(ComboBoxWords, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel_SideMenuLayout.setVerticalGroup(
+            jPanel_SideMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_SideMenuLayout.createSequentialGroup()
+                .addComponent(jPanel_WordEdits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(jPanel_SentenceEdits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jPanel_ParagraphEdits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ComboBoxSentences, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel_SectionEdits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ComboBoxParagraphs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ComboBoxPages, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ComboBoxSections, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ComboBoxChapters)
-                .addGap(385, 385, 385))
+                .addComponent(jPanel_ChapterEdits, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
+
+        jScrollPane2.setViewportView(jPanel_SideMenu);
 
         FileMenu.setText("File");
 
@@ -219,24 +400,6 @@ public class MainUI extends javax.swing.JFrame {
         InsertMenuNewSection.setText("New Section");
         InsertMenu.add(InsertMenuNewSection);
 
-        InsertMenuNewSubsection.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        InsertMenuNewSubsection.setText("New Subsection");
-        InsertMenuNewSubsection.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InsertMenuNewSubsectionActionPerformed(evt);
-            }
-        });
-        InsertMenu.add(InsertMenuNewSubsection);
-
-        InsertMenuNewParagraph.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        InsertMenuNewParagraph.setText("New Paragraph");
-        InsertMenuNewParagraph.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InsertMenuNewParagraphActionPerformed(evt);
-            }
-        });
-        InsertMenu.add(InsertMenuNewParagraph);
-
         MainMenuBar.add(InsertMenu);
 
         UndoMenu.setText("Undo");
@@ -264,10 +427,6 @@ public class MainUI extends javax.swing.JFrame {
         UndoMenuLastSectionEdit.setText("Last Section Edit");
         UndoMenu.add(UndoMenuLastSectionEdit);
 
-        UndoMenuLastSubsectionEdit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
-        UndoMenuLastSubsectionEdit.setText("Last Subsection Edit");
-        UndoMenu.add(UndoMenuLastSubsectionEdit);
-
         UndoMenuLastParagraphEdit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.ALT_DOWN_MASK | java.awt.event.InputEvent.SHIFT_DOWN_MASK));
         UndoMenuLastParagraphEdit.setText("Last Paragraph Edit");
         UndoMenu.add(UndoMenuLastParagraphEdit);
@@ -286,9 +445,6 @@ public class MainUI extends javax.swing.JFrame {
 
         UndoMenuAllSectionEdits.setText("All Section Edits");
         UndoMenu.add(UndoMenuAllSectionEdits);
-
-        UndoMenuAllPageEdits.setText("All Page Edits");
-        UndoMenu.add(UndoMenuAllPageEdits);
 
         UndoMenuAllParagraphEdits.setText("All Paragraph Edits");
         UndoMenu.add(UndoMenuAllParagraphEdits);
@@ -318,9 +474,6 @@ public class MainUI extends javax.swing.JFrame {
         DeleteMenuAllSectionEdits.setText("All Section Edits");
         DeleteMenu.add(DeleteMenuAllSectionEdits);
 
-        DeleteMenuAllSubsectionEdits.setText("All Subsection Edits");
-        DeleteMenu.add(DeleteMenuAllSubsectionEdits);
-
         DeleteMenuAllParagraphEdits.setText("All Paragraph Edits");
         DeleteMenu.add(DeleteMenuAllParagraphEdits);
 
@@ -334,13 +487,20 @@ public class MainUI extends javax.swing.JFrame {
 
         HelpMenu.setText("Help");
 
-        HelpMenuScribrManual.setText("Scribr Manual");
-        HelpMenu.add(HelpMenuScribrManual);
-
         HelpMenuFAQ.setText("FAQ");
+        HelpMenuFAQ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HelpMenuFAQActionPerformed(evt);
+            }
+        });
         HelpMenu.add(HelpMenuFAQ);
 
         HelpMenuReportBug.setText("Report A Bug");
+        HelpMenuReportBug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HelpMenuReportBugActionPerformed(evt);
+            }
+        });
         HelpMenu.add(HelpMenuReportBug);
 
         MainMenuBar.add(HelpMenu);
@@ -352,16 +512,18 @@ public class MainUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 869, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -378,7 +540,7 @@ public class MainUI extends javax.swing.JFrame {
     }
     
     private void FileMenuNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuNewActionPerformed
-        jTextArea1.setText("");
+        jTextArea.setText("");
 
     }//GEN-LAST:event_FileMenuNewActionPerformed
 
@@ -395,7 +557,7 @@ public class MainUI extends javax.swing.JFrame {
         try {
             File f = new File(jfc.getSelectedFile().getAbsolutePath());
             FileWriter out = new FileWriter(f);
-            out.write(jTextArea1.getText());
+            out.write(jTextArea.getText());
             out.close();
         } catch (FileNotFoundException ex) {
             Component f = null;
@@ -411,14 +573,6 @@ public class MainUI extends javax.swing.JFrame {
         String s = jTextArea1.getSelectedText();
         System.out.println(s);
     }//GEN-LAST:event_InsertMenuNewChapterActionPerformed
-
-    private void InsertMenuNewSubsectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertMenuNewSubsectionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_InsertMenuNewSubsectionActionPerformed
-
-    private void InsertMenuNewParagraphActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertMenuNewParagraphActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_InsertMenuNewParagraphActionPerformed
 
     private void UndoMenuSelectedEditsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuSelectedEditsActionPerformed
         // TODO add your handling code here:
@@ -447,8 +601,8 @@ public class MainUI extends javax.swing.JFrame {
         jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
         int returnValue = jfc.showOpenDialog(null);
-        
-        if(returnValue == JFileChooser.APPROVE_OPTION){
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
             File f = new File(jfc.getSelectedFile().getAbsolutePath());
             try {
                 FileReader read = new FileReader(f);
@@ -457,7 +611,7 @@ public class MainUI extends javax.swing.JFrame {
                     String line = scan.nextLine() + "\n";
                     ingest = ingest + line;
                 }
-                jTextArea1.setText(ingest);
+                jTextArea.setText(ingest);
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -475,6 +629,30 @@ public class MainUI extends javax.swing.JFrame {
                 break;
         }
     }//GEN-LAST:event_jTextArea1KeyPressed
+
+    private void HelpMenuFAQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuFAQActionPerformed
+             Desktop desktop = java.awt.Desktop.getDesktop();
+        try {
+            URI oURL = new URI("https://htmlpreview.github.io/?https://github.com/johnpurcell514/COMP-5541_PROJECT/blob/main/SUPPORT/index.html");
+            desktop.browse(oURL);
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_HelpMenuFAQActionPerformed
+
+    private void HelpMenuReportBugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuReportBugActionPerformed
+         Desktop desktop = java.awt.Desktop.getDesktop();
+        try {
+            URI oURL = new URI("https://htmlpreview.github.io/?https://github.com/johnpurcell514/COMP-5541_PROJECT/blob/main/SUPPORT/EmailSupport.html");
+            desktop.browse(oURL);
+        } catch (IOException ex) {
+            Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_HelpMenuReportBugActionPerformed
 
     /**
      * @param args the command line arguments
@@ -503,7 +681,7 @@ public class MainUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } finally {
-            
+
         }
         //</editor-fold>
 
@@ -516,18 +694,11 @@ public class MainUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> ComboBoxChapters;
-    private javax.swing.JComboBox<String> ComboBoxPages;
-    private javax.swing.JComboBox<String> ComboBoxParagraphs;
-    private javax.swing.JComboBox<String> ComboBoxSections;
-    private javax.swing.JComboBox<String> ComboBoxSentences;
-    private javax.swing.JComboBox<String> ComboBoxWords;
     private javax.swing.JMenu DeleteMenu;
     private javax.swing.JMenuItem DeleteMenuAllChapterEdits;
     private javax.swing.JMenuItem DeleteMenuAllParagraphEdits;
     private javax.swing.JMenuItem DeleteMenuAllSectionEdits;
     private javax.swing.JMenuItem DeleteMenuAllSentenceEdits;
-    private javax.swing.JMenuItem DeleteMenuAllSubsectionEdits;
     private javax.swing.JMenuItem DeleteMenuAllWordEdits;
     private javax.swing.JMenuItem DeleteMenuSelectedEdits;
     private javax.swing.JMenu FileMenu;
@@ -538,16 +709,12 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenu HelpMenu;
     private javax.swing.JMenuItem HelpMenuFAQ;
     private javax.swing.JMenuItem HelpMenuReportBug;
-    private javax.swing.JMenuItem HelpMenuScribrManual;
     private javax.swing.JMenu InsertMenu;
     private javax.swing.JMenuItem InsertMenuNewChapter;
-    private javax.swing.JMenuItem InsertMenuNewParagraph;
     private javax.swing.JMenuItem InsertMenuNewSection;
-    private javax.swing.JMenuItem InsertMenuNewSubsection;
     private javax.swing.JMenuBar MainMenuBar;
     private javax.swing.JMenu UndoMenu;
     private javax.swing.JMenuItem UndoMenuAllChapterEdits;
-    private javax.swing.JMenuItem UndoMenuAllPageEdits;
     private javax.swing.JMenuItem UndoMenuAllParagraphEdits;
     private javax.swing.JMenuItem UndoMenuAllSectionEdits;
     private javax.swing.JMenuItem UndoMenuAllSentenceEdits;
@@ -556,15 +723,44 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem UndoMenuLastParagraphEdit;
     private javax.swing.JMenuItem UndoMenuLastSectionEdit;
     private javax.swing.JMenuItem UndoMenuLastSentenceEdit;
-    private javax.swing.JMenuItem UndoMenuLastSubsectionEdit;
     private javax.swing.JMenuItem UndoMenuLastWordEdit;
     private javax.swing.JMenuItem UndoMenuSelectedEdits;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox16;
+    private javax.swing.JCheckBox jCheckBox17;
+    private javax.swing.JCheckBox jCheckBox18;
+    private javax.swing.JCheckBox jCheckBox19;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox20;
+    private javax.swing.JCheckBox jCheckBox26;
+    private javax.swing.JCheckBox jCheckBox27;
+    private javax.swing.JCheckBox jCheckBox28;
+    private javax.swing.JCheckBox jCheckBox29;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox30;
+    private javax.swing.JCheckBox jCheckBox36;
+    private javax.swing.JCheckBox jCheckBox37;
+    private javax.swing.JCheckBox jCheckBox38;
+    private javax.swing.JCheckBox jCheckBox39;
+    private javax.swing.JCheckBox jCheckBox4;
+    private javax.swing.JCheckBox jCheckBox40;
+    private javax.swing.JCheckBox jCheckBox41;
+    private javax.swing.JCheckBox jCheckBox42;
+    private javax.swing.JCheckBox jCheckBox43;
+    private javax.swing.JCheckBox jCheckBox44;
+    private javax.swing.JCheckBox jCheckBox45;
+    private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JPanel jPanel_ChapterEdits;
+    private javax.swing.JPanel jPanel_ParagraphEdits;
+    private javax.swing.JPanel jPanel_SectionEdits;
+    private javax.swing.JPanel jPanel_SentenceEdits;
+    private javax.swing.JPanel jPanel_SideMenu;
+    private javax.swing.JPanel jPanel_WordEdits;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea;
     // End of variables declaration//GEN-END:variables
 }
