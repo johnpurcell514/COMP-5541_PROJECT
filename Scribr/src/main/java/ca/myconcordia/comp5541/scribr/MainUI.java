@@ -15,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import java.awt.Component;
-import java.awt.event.KeyEvent;
 import java.util.Scanner;
 import java.io.FileReader;
 import java.sql.SQLException;
@@ -26,12 +25,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
  * @author sarsingh
  */
-public class MainUI extends javax.swing.JFrame {
+public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
     private static Connection connection;
 
@@ -40,6 +41,8 @@ public class MainUI extends javax.swing.JFrame {
      */
     public MainUI() {
         initComponents();
+        /* attach document listener to jTextArea */
+        jTextArea1.getDocument().addDocumentListener(this);
     }
 
     /**
@@ -51,8 +54,6 @@ public class MainUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel_SideMenu = new javax.swing.JPanel();
         jPanel_WordEdits = new javax.swing.JPanel();
@@ -85,6 +86,8 @@ public class MainUI extends javax.swing.JFrame {
         jCheckBox43 = new javax.swing.JCheckBox();
         jCheckBox44 = new javax.swing.JCheckBox();
         jCheckBox45 = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         MainMenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
         FileMenuNew = new javax.swing.JMenuItem();
@@ -345,6 +348,10 @@ public class MainUI extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(jPanel_SideMenu);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
         FileMenu.setText("File");
 
         FileMenuNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -512,17 +519,19 @@ public class MainUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -540,8 +549,7 @@ public class MainUI extends javax.swing.JFrame {
     }
     
     private void FileMenuNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuNewActionPerformed
-        jTextArea.setText("");
-
+        jTextArea1.setText("");
     }//GEN-LAST:event_FileMenuNewActionPerformed
 
     private void FileMenuQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuQuitActionPerformed
@@ -557,7 +565,7 @@ public class MainUI extends javax.swing.JFrame {
         try {
             File f = new File(jfc.getSelectedFile().getAbsolutePath());
             FileWriter out = new FileWriter(f);
-            out.write(jTextArea.getText());
+            out.write(jTextArea1.getText());
             out.close();
         } catch (FileNotFoundException ex) {
             Component f = null;
@@ -611,24 +619,12 @@ public class MainUI extends javax.swing.JFrame {
                     String line = scan.nextLine() + "\n";
                     ingest = ingest + line;
                 }
-                jTextArea.setText(ingest);
+                jTextArea1.setText(ingest);
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
         }
     }//GEN-LAST:event_FileMenuOpenActionPerformed
-    // custom handler to add actions to BACKSPACE and DELETE keys
-    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed
-        // TODO add your handling code here:
-        switch(evt.getKeyCode()){
-            case KeyEvent.VK_BACK_SPACE:
-                System.out.println("backspace pressed");
-                break;
-            case KeyEvent.VK_DELETE:
-                System.out.println("delete pressed");
-                break;
-        }
-    }//GEN-LAST:event_jTextArea1KeyPressed
 
     private void HelpMenuFAQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HelpMenuFAQActionPerformed
              Desktop desktop = java.awt.Desktop.getDesktop();
@@ -659,12 +655,9 @@ public class MainUI extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         /* initialize the database */
-         MainUI.connection = DatabaseConnection.getConnection();
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        MainUI.connection = DatabaseConnection.getConnection();
+        
+        /* apply Nimbus theme */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -761,6 +754,47 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JTextArea jTextArea;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
+    /* Doucment Listener Overrides */
+    @Override
+    public void insertUpdate(DocumentEvent ev) {
+        
+        if(ev.getLength() != 1){
+            return;
+        }
+        
+        int pos = ev.getOffset();
+        
+        String content = "";
+        
+        try {
+            content = jTextArea1.getText(0, pos + 1);
+            System.out.println();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println(content);
+        
+        if(content.contains("raj was here")){
+            System.out.println("who cares bro");
+            content = "";
+            return;
+        }
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent ev) {
+        // do nothing
+        if(ev.getLength() != 1) {
+            return;
+        }
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent ev) {
+        
+    }
 }
