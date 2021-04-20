@@ -5,6 +5,7 @@
  */
 package ca.myconcordia.comp5541.scribr;
 
+import ca.myconcordia.comp5541.dataStructures.CustomStack;
 import ca.myconcordia.comp5541.scribr.db.DatabaseConnection;
 import java.sql.Connection;
 import javax.swing.JFileChooser;
@@ -23,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 
 import java.awt.Desktop;
+import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
@@ -37,7 +39,9 @@ import javax.swing.event.DocumentListener;
 public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
     private static Connection connection;
-    private String previousText;
+    private javax.swing.JCheckBox[] jCheckBoxesLetters = new javax.swing.JCheckBox[5];
+    private CustomStack<String> wordsStack = new CustomStack<String>(5);
+    private String previousText = null;
 
     /**
      * Creates new form MainUI
@@ -46,7 +50,6 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         initComponents();
         /* attach document listener to jTextArea */
         jTextArea1.getDocument().addDocumentListener(this);
-        this.previousText = "";
     }
 
     /**
@@ -135,6 +138,11 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         jPanel_WordEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Words", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
         jCheckBox1.setText("jCheckBox1");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         jCheckBox2.setText("jCheckBox1");
 
@@ -142,7 +150,7 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
         jCheckBox4.setText("jCheckBox1");
 
-        jCheckBox5.setText("jCheckBox1");
+        jCheckBox5.setText("jCheckBox5");
 
         javax.swing.GroupLayout jPanel_WordEditsLayout = new javax.swing.GroupLayout(jPanel_WordEdits);
         jPanel_WordEdits.setLayout(jPanel_WordEditsLayout);
@@ -150,24 +158,25 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
             jPanel_WordEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jCheckBox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jCheckBox3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jCheckBox5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jCheckBox4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel_WordEditsLayout.createSequentialGroup()
+                .addComponent(jCheckBox5)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel_WordEditsLayout.setVerticalGroup(
             jPanel_WordEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_WordEditsLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE)
                 .addComponent(jCheckBox5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel_SentenceEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sentences", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
@@ -414,6 +423,11 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
         InsertMenuNewSection.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         InsertMenuNewSection.setText("New Section");
+        InsertMenuNewSection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InsertMenuNewSectionActionPerformed(evt);
+            }
+        });
         InsertMenu.add(InsertMenuNewSection);
 
         MainMenuBar.add(InsertMenu);
@@ -792,10 +806,13 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         }
     }//GEN-LAST:event_HelpMenuReportBugActionPerformed
 
-    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {
         this.previousText = jTextArea1.getText();
-    }//GEN-LAST:event_jTextArea1KeyPressed
+    }
 
     /**
      * @param args the command line arguments
@@ -918,14 +935,12 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         
         try {
             content = jTextArea1.getText(0, pos + 1);
-            System.out.println();
+            System.out.println(content);
         } catch (Exception e) {
             e.printStackTrace();
         }
         
-        System.out.println(content);
-        
-        if(content.contains("raj was here")){
+        if(content.equals("raj was here")){
             System.out.println("who cares bro");
             content = "";
             return;
@@ -934,9 +949,19 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
     @Override
     public void removeUpdate(DocumentEvent ev) {
-        // do nothing
+        // can for removals in the document
         if(ev.getLength() != 1) {
             return;
+        }
+        
+        if(this.previousText != null){
+            String removedStr = previousText.substring(ev.getOffset(), ev.getOffset() + ev.getLength());
+            System.out.println("ev.getOffset()=" + ev.getOffset() + " ev.getLength()=" + ev.getLength());
+            System.out.println("text in jTextArea1=" + this.previousText);
+            System.out.println("removedStr=" + removedStr);
+            
+            wordsStack.push(removedStr);
+            wordsStack.display();
         }
     }
 
