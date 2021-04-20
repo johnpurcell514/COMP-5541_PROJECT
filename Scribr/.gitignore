@@ -5,3 +5,4 @@
 target/
 nbactions.xml
 data.db
+.DS_Store
