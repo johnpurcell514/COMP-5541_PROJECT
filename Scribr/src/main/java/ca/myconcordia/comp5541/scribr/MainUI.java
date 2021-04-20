@@ -37,6 +37,7 @@ import javax.swing.event.DocumentListener;
 public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
     private static Connection connection;
+    private String previousText;
 
     /**
      * Creates new form MainUI
@@ -45,6 +46,7 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         initComponents();
         /* attach document listener to jTextArea */
         jTextArea1.getDocument().addDocumentListener(this);
+        this.previousText = "";
     }
 
     /**
@@ -352,6 +354,11 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextArea1KeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextArea1);
 
         FileMenu.setText("File");
@@ -549,14 +556,15 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         }
     }
     
-    private String databaseReturnString(Connection conn, String query, 
-                                        String colName){
+    private String databaseReturnString(Connection conn, String query, String colName){
+        
+        StringBuilder val = new StringBuilder();
+        
         try (Statement stmt = conn.createStatement();) {
             ResultSet rs = stmt.executeQuery(query);
             try {
                 while (rs.next()) {
-                    String val = rs.getString(colName);
-                    return val;
+                    val.append(rs.getString(colName));
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -566,16 +574,18 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return val.toString();
     }
     
-     private int databaseReturnInt(Connection conn, String query, 
-                                   String colName){
+     private int databaseReturnInt(Connection conn, String query, String colName){
+         
+        Integer val = null;
+         
         try (Statement stmt = conn.createStatement();) {
             ResultSet rs = stmt.executeQuery(query);
             try {
                 while (rs.next()) {
-                    int val = rs.getInt(colName);
-                    return val;
+                    val = rs.getInt(colName);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -585,6 +595,7 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return val;
     }
     
     private void FileMenuNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuNewActionPerformed
@@ -780,6 +791,11 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
             e.printStackTrace();
         }
     }//GEN-LAST:event_HelpMenuReportBugActionPerformed
+
+    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea1KeyPressed
+        // TODO add your handling code here:
+        this.previousText = jTextArea1.getText();
+    }//GEN-LAST:event_jTextArea1KeyPressed
 
     /**
      * @param args the command line arguments
