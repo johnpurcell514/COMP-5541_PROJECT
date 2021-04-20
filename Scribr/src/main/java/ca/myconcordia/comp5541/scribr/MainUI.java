@@ -7,6 +7,8 @@ package ca.myconcordia.comp5541.scribr;
 
 import ca.myconcordia.comp5541.dataStructures.CustomStack;
 import ca.myconcordia.comp5541.scribr.db.DatabaseConnection;
+import ca.myconcordia.comp5541.scribr.models.Sentence;
+import ca.myconcordia.comp5541.scribr.models.Word;
 import java.sql.Connection;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
@@ -27,6 +29,7 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.DocumentEvent;
@@ -42,6 +45,8 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     private javax.swing.JCheckBox[] jCheckBoxesLetters = new javax.swing.JCheckBox[5];
     private CustomStack<String> wordsStack = new CustomStack<String>(5);
     private String previousText = null;
+    
+    
 
     /**
      * Creates new form MainUI
@@ -50,6 +55,18 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         initComponents();
         /* attach document listener to jTextArea */
         jTextArea1.getDocument().addDocumentListener(this);
+        words.add(new Word());
+        words.add(new Word());
+        words.add(new Word());
+        words.add(new Word());
+        
+        StringBuilder sb = new StringBuilder();
+        
+        for(Word word: words){
+            sb.append(word);
+        }
+        
+        sentences.add(new Sentence(sb));
     }
 
     /**
@@ -922,6 +939,11 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     // End of variables declaration//GEN-END:variables
 
     /* Doucment Listener Overrides */
+    
+    private ArrayList<Word> words = new ArrayList<>();
+    private ArrayList<Sentence> sentences = new ArrayList<>();
+     
+    
     @Override
     public void insertUpdate(DocumentEvent ev) {
         
@@ -938,12 +960,6 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
             System.out.println(content);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        
-        if(content.equals("raj was here")){
-            System.out.println("who cares bro");
-            content = "";
-            return;
         }
     }
 

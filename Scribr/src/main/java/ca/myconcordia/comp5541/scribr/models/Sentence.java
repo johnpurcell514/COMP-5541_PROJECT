@@ -9,20 +9,20 @@ package ca.myconcordia.comp5541.scribr.models;
  *
  * @author sarsingh
  */
-public class Words {
+public class Sentence {
 
     /**
-     * @return the wordId
+     * @return the sentenceId
      */
-    public int getWordId() {
-        return wordId;
+    public int getSentenceId() {
+        return sentenceId;
     }
 
     /**
-     * @param wordId the wordId to set
+     * @param sentenceId the sentenceId to set
      */
-    public void setWordId(int wordId) {
-        this.wordId = wordId;
+    public void setSentenceId(int sentenceId) {
+        this.sentenceId = sentenceId;
     }
 
     /**
@@ -37,6 +37,20 @@ public class Words {
      */
     public void setOperationId(int operationId) {
         this.operationId = operationId;
+    }
+
+    /**
+     * @return the paragraphId
+     */
+    public int getParagraphId() {
+        return paragraphId;
+    }
+
+    /**
+     * @param paragraphId the paragraphId to set
+     */
+    public void setParagraphId(int paragraphId) {
+        this.paragraphId = paragraphId;
     }
 
     /**
@@ -66,13 +80,15 @@ public class Words {
     public void setOldValue(String oldValue) {
         this.oldValue = oldValue;
     }
-    private int wordId;
+    private int sentenceId;
     private int operationId;
+    private int paragraphId;
     private String newValue;
     private String oldValue;
-    public Words(int wordId, int operationId, String newValue, String oldValue){
-        this.wordId = wordId;
+    public Sentence(int sentenceId, int operationId, int paragraphId, String newValue, String oldValue){
+        this.sentenceId = sentenceId;
         this.operationId = operationId;
+        this.paragraphId = paragraphId;
         this.newValue = newValue;
         this.oldValue = oldValue;
     }
