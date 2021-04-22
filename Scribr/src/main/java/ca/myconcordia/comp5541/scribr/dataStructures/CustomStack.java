@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ca.myconcordia.comp5541.dataStructures;
+package ca.myconcordia.comp5541.scribr.dataStructures;
 
 /**
  *

@@ -5,91 +5,35 @@
  */
 package ca.myconcordia.comp5541.scribr.models;
 
-/**
- *
- * @author sarsingh
- */
+import java.util.ArrayList;
+
 public class Sentence {
 
-    /**
-     * @return the sentenceId
-     */
-    public int getSentenceId() {
-        return sentenceId;
+    private ArrayList<Word> sentence;
+    private int index;
+
+    public Sentence(ArrayList<Word> sentence, int index) {
+        this.sentence = sentence;
+        this.index = index;
     }
 
-    /**
-     * @param sentenceId the sentenceId to set
-     */
-    public void setSentenceId(int sentenceId) {
-        this.sentenceId = sentenceId;
+    public void deleteAll() {
+        this.sentence.clear();
     }
 
-    /**
-     * @return the operationId
-     */
-    public int getOperationId() {
-        return operationId;
+    public void add(Word word) {
+        this.sentence.add(word);
     }
-
-    /**
-     * @param operationId the operationId to set
-     */
-    public void setOperationId(int operationId) {
-        this.operationId = operationId;
+    
+    public int getIndex() {
+        return this.index;
     }
-
-    /**
-     * @return the paragraphId
-     */
-    public int getParagraphId() {
-        return paragraphId;
+    
+    public void setIndex(int index) {
+        this.index = index;
     }
-
-    /**
-     * @param paragraphId the paragraphId to set
-     */
-    public void setParagraphId(int paragraphId) {
-        this.paragraphId = paragraphId;
-    }
-
-    /**
-     * @return the newValue
-     */
-    public String getNewValue() {
-        return newValue;
-    }
-
-    /**
-     * @param newValue the newValue to set
-     */
-    public void setNewValue(String newValue) {
-        this.newValue = newValue;
-    }
-
-    /**
-     * @return the oldValue
-     */
-    public String getOldValue() {
-        return oldValue;
-    }
-
-    /**
-     * @param oldValue the oldValue to set
-     */
-    public void setOldValue(String oldValue) {
-        this.oldValue = oldValue;
-    }
-    private int sentenceId;
-    private int operationId;
-    private int paragraphId;
-    private String newValue;
-    private String oldValue;
-    public Sentence(int sentenceId, int operationId, int paragraphId, String newValue, String oldValue){
-        this.sentenceId = sentenceId;
-        this.operationId = operationId;
-        this.paragraphId = paragraphId;
-        this.newValue = newValue;
-        this.oldValue = oldValue;
+    
+    public ArrayList<Word> getSentence(){
+        return this.sentence;
     }
 }

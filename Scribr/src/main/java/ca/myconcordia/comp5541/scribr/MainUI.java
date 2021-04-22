@@ -5,7 +5,7 @@
  */
 package ca.myconcordia.comp5541.scribr;
 
-import ca.myconcordia.comp5541.dataStructures.CustomStack;
+import ca.myconcordia.comp5541.scribr.dataStructures.CustomStack;
 import ca.myconcordia.comp5541.scribr.db.DatabaseConnection;
 import ca.myconcordia.comp5541.scribr.models.Sentence;
 import ca.myconcordia.comp5541.scribr.models.Word;
@@ -23,10 +23,7 @@ import java.io.FileReader;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.PreparedStatement;
-
 import java.awt.Desktop;
-import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -42,8 +39,8 @@ import javax.swing.event.DocumentListener;
 public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
     private static Connection connection;
-    private javax.swing.JCheckBox[] jCheckBoxesLetters = new javax.swing.JCheckBox[5];
-    private CustomStack<String> wordsStack = new CustomStack<String>(5);
+    private CustomStack<Word> wordsStack = new CustomStack<Word>(5);
+    private CustomStack<Sentence> sentenceStack = new CustomStack<Sentence>(5);
     private String previousText = null;
     
     
@@ -55,18 +52,6 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         initComponents();
         /* attach document listener to jTextArea */
         jTextArea1.getDocument().addDocumentListener(this);
-        words.add(new Word());
-        words.add(new Word());
-        words.add(new Word());
-        words.add(new Word());
-        
-        StringBuilder sb = new StringBuilder();
-        
-        for(Word word: words){
-            sb.append(word);
-        }
-        
-        sentences.add(new Sentence(sb));
     }
 
     /**
@@ -830,6 +815,11 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {
         this.previousText = jTextArea1.getText();
     }
+    
+    private void wordParser(){
+         String[] parsedWords = this.previousText.split(" ");
+         
+    }
 
     /**
      * @param args the command line arguments
@@ -975,9 +965,6 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
             System.out.println("ev.getOffset()=" + ev.getOffset() + " ev.getLength()=" + ev.getLength());
             System.out.println("text in jTextArea1=" + this.previousText);
             System.out.println("removedStr=" + removedStr);
-            
-            wordsStack.push(removedStr);
-            wordsStack.display();
         }
     }
 

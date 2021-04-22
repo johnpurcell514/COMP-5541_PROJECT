@@ -20,7 +20,7 @@ import java.sql.Statement;
 public class DatabaseConnection {
     private static Connection connection = null;
     private static final String URL = "jdbc:sqlite:data.db";
-    private static final String REL_INITIALIZIE_DB_SCRIPT = "initializeDb.sql";
+    private static final String REL_INITIALIZIE_DB_SCRIPT = "initializeDb_OLD.sql";
     static {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -48,7 +48,7 @@ public class DatabaseConnection {
         String[] commands = null;
 
         try (
-            InputStream inputStream = DatabaseConnection.class.getResourceAsStream("/initializeDb.sql");
+            InputStream inputStream = DatabaseConnection.class.getResourceAsStream("/" + DatabaseConnection.REL_INITIALIZIE_DB_SCRIPT);
             InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(streamReader);) {
             
@@ -65,15 +65,15 @@ public class DatabaseConnection {
         try (Connection conn = DriverManager.getConnection(DatabaseConnection.URL); Statement stmt = conn.createStatement();) {
 
             DatabaseMetaData meta = connection.getMetaData();
-            System.out.println("the driver name is " + meta.getDriverName());
-            System.out.println("the database file is " + meta.getURL());
+            //System.out.println("the driver name is " + meta.getDriverName());
+            //System.out.println("the database file is " + meta.getURL());
 
             if(commands != null) {
                 for(int i = 0; i < commands.length; i++){
                     // skip any empty lines found in the file
                     if(!commands[i].trim().equals("")){
                         stmt.executeUpdate(commands[i]);
-                        System.out.println(">>"+commands[i]);
+                        //System.out.println(">>"+commands[i]);
                     }
                 }
             } else {

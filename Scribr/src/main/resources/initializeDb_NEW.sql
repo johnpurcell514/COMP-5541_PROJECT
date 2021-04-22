@@ -1,12 +1,12 @@
 PRAGMA foreign_keys = ON;
-DROP TABLE words;
-DROP TABLE sentences;
-DROP TABLE paragraphs;
-DROP TABLE sections;
-DROP TABLE chapters;
-DROP TABLE operations;
-DROP TABLE constructs; 
-DROP TABLE operationtypes;
+-- DROP TABLE words;
+-- DROP TABLE sentences;
+-- DROP TABLE paragraphs;
+-- DROP TABLE sections;
+-- DROP TABLE chapters;
+-- DROP TABLE operations;
+-- DROP TABLE constructs; 
+-- DROP TABLE operationtypes;
 
 CREATE TABLE constructs (
   constructId INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT

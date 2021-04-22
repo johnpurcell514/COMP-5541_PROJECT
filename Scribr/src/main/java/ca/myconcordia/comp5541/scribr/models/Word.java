@@ -11,69 +11,58 @@ package ca.myconcordia.comp5541.scribr.models;
  */
 public class Word {
 
-    /**
-     * @return the wordId
-     */
-    public int getWordId() {
-        return wordId;
+    private int index;
+    private int sentenceId = -1;
+    private String word;
+
+    public Word(int index, String word) {
+        this.index = index;
+        this.word = word;
     }
 
-    /**
-     * @param wordId the wordId to set
-     */
-    public void setWordId(int wordId) {
-        this.wordId = wordId;
+    public int getIndex() {
+        return this.index;
     }
 
-    /**
-     * @return the operationId
-     */
-    public int getOperationId() {
-        return operationId;
+    public void setSentenceId(int sentenceId) {
+        this.sentenceId = sentenceId;
     }
 
-    /**
-     * @param operationId the operationId to set
-     */
-    public void setOperationId(int operationId) {
-        this.operationId = operationId;
+    public String getWord() {
+        return this.word;
     }
 
-    /**
-     * @return the newValue
-     */
-    public String getNewValue() {
-        return newValue;
+    public int getSentenceId() {
+        return this.sentenceId;
     }
 
-    /**
-     * @param newValue the newValue to set
-     */
-    public void setNewValue(String newValue) {
-        this.newValue = newValue;
+    @Override
+    public String toString() {
+        return this.word;
     }
 
-    /**
-     * @return the oldValue
-     */
-    public String getOldValue() {
-        return oldValue;
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + index + this.word.hashCode();
+        return result;
     }
 
-    /**
-     * @param oldValue the oldValue to set
-     */
-    public void setOldValue(String oldValue) {
-        this.oldValue = oldValue;
-    }
-    private int wordId;
-    private int operationId;
-    private String newValue;
-    private String oldValue;
-    public Word(int wordId, int operationId, String newValue, String oldValue){
-        this.wordId = wordId;
-        this.operationId = operationId;
-        this.newValue = newValue;
-        this.oldValue = oldValue;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        Word other = (Word) obj;
+
+        return this.word.equals(other.getWord());
     }
 }
