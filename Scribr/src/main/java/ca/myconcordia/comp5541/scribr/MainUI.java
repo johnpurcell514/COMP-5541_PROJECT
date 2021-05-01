@@ -5,7 +5,10 @@
  */
 package ca.myconcordia.comp5541.scribr;
 
+import ca.myconcordia.comp5541.scribr.dataStructures.CustomStack;
 import ca.myconcordia.comp5541.scribr.db.DatabaseConnection;
+import ca.myconcordia.comp5541.scribr.models.Sentence;
+import ca.myconcordia.comp5541.scribr.models.Word;
 import java.sql.Connection;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
@@ -17,26 +20,38 @@ import javax.swing.JOptionPane;
 import java.awt.Component;
 import java.util.Scanner;
 import java.io.FileReader;
-
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
  * @author sarsingh
  */
-public class MainUI extends javax.swing.JFrame {
+public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
-    private static Connection connection = DatabaseConnection.getConnection();
+    private static Connection connection;
+    private CustomStack<Word> wordsStack = new CustomStack<Word>(5);
+    private CustomStack<Sentence> sentenceStack = new CustomStack<Sentence>(5);
+    private String previousText = null;
+    
+    
 
     /**
      * Creates new form MainUI
      */
     public MainUI() {
         initComponents();
+        /* attach document listener to jTextArea */
+        jTextArea1.getDocument().addDocumentListener(this);
     }
 
     /**
@@ -48,8 +63,6 @@ public class MainUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         jPanel_SideMenu = new javax.swing.JPanel();
         jPanel_WordEdits = new javax.swing.JPanel();
@@ -82,6 +95,8 @@ public class MainUI extends javax.swing.JFrame {
         jCheckBox43 = new javax.swing.JCheckBox();
         jCheckBox44 = new javax.swing.JCheckBox();
         jCheckBox45 = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         MainMenuBar = new javax.swing.JMenuBar();
         FileMenu = new javax.swing.JMenu();
         FileMenuNew = new javax.swing.JMenuItem();
@@ -120,16 +135,16 @@ public class MainUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Scribr");
 
-        jTextArea.setColumns(20);
-        jTextArea.setLineWrap(true);
-        jTextArea.setRows(5);
-        jScrollPane1.setViewportView(jTextArea);
-
         jPanel_SideMenu.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "RECENT EDITS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
 
         jPanel_WordEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Words", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
         jCheckBox1.setText("jCheckBox1");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
 
         jCheckBox2.setText("jCheckBox1");
 
@@ -137,7 +152,7 @@ public class MainUI extends javax.swing.JFrame {
 
         jCheckBox4.setText("jCheckBox1");
 
-        jCheckBox5.setText("jCheckBox1");
+        jCheckBox5.setText("jCheckBox5");
 
         javax.swing.GroupLayout jPanel_WordEditsLayout = new javax.swing.GroupLayout(jPanel_WordEdits);
         jPanel_WordEdits.setLayout(jPanel_WordEditsLayout);
@@ -145,24 +160,25 @@ public class MainUI extends javax.swing.JFrame {
             jPanel_WordEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jCheckBox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jCheckBox3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jCheckBox5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jCheckBox4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jCheckBox3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel_WordEditsLayout.createSequentialGroup()
+                .addComponent(jCheckBox5)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel_WordEditsLayout.setVerticalGroup(
             jPanel_WordEditsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel_WordEditsLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBox4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE)
                 .addComponent(jCheckBox5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel_SentenceEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sentences", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
@@ -347,6 +363,15 @@ public class MainUI extends javax.swing.JFrame {
 
         jScrollPane2.setViewportView(jPanel_SideMenu);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextArea1KeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTextArea1);
+
         FileMenu.setText("File");
 
         FileMenuNew.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
@@ -400,6 +425,11 @@ public class MainUI extends javax.swing.JFrame {
 
         InsertMenuNewSection.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         InsertMenuNewSection.setText("New Section");
+        InsertMenuNewSection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InsertMenuNewSectionActionPerformed(evt);
+            }
+        });
         InsertMenu.add(InsertMenuNewSection);
 
         MainMenuBar.add(InsertMenu);
@@ -514,26 +544,78 @@ public class MainUI extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 707, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void databaseNoReturnValue(Connection conn, String query){
+        try (Statement stmt = conn.createStatement();) {
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private String databaseReturnString(Connection conn, String query, String colName){
+        
+        StringBuilder val = new StringBuilder();
+        
+        try (Statement stmt = conn.createStatement();) {
+            ResultSet rs = stmt.executeQuery(query);
+            try {
+                while (rs.next()) {
+                    val.append(rs.getString(colName));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return val.toString();
+    }
+    
+     private int databaseReturnInt(Connection conn, String query, String colName){
+         
+        Integer val = null;
+         
+        try (Statement stmt = conn.createStatement();) {
+            ResultSet rs = stmt.executeQuery(query);
+            try {
+                while (rs.next()) {
+                    val = rs.getInt(colName);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return val;
+    }
+    
     private void FileMenuNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuNewActionPerformed
-        jTextArea.setText("");
-
+        jTextArea1.setText("");
     }//GEN-LAST:event_FileMenuNewActionPerformed
 
     private void FileMenuQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuQuitActionPerformed
@@ -549,7 +631,7 @@ public class MainUI extends javax.swing.JFrame {
         try {
             File f = new File(jfc.getSelectedFile().getAbsolutePath());
             FileWriter out = new FileWriter(f);
-            out.write(jTextArea.getText());
+            out.write(jTextArea1.getText());
             out.close();
         } catch (FileNotFoundException ex) {
             Component f = null;
@@ -561,21 +643,123 @@ public class MainUI extends javax.swing.JFrame {
     }//GEN-LAST:event_FileMenuSaveActionPerformed
 
     private void InsertMenuNewChapterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertMenuNewChapterActionPerformed
-        // TODO add your handling code here:
+        // get the text of the chapter
+        String s = jTextArea1.getSelectedText();
+        // get operationId
+        String query1 = "select * from operationTypes where operationType = 'insert'";
+        int operationTypeId = databaseReturnInt(MainUI.connection, query1, "operationTypeId");
+        String query2 = "select * from constructs where constructType = 'chapter'";
+        int constructId = databaseReturnInt(MainUI.connection, query2, "constructId");
+        String query3 = "insert into operations (operationTypeId, constructId) values"
+                       + "(" + operationTypeId + "," + constructId + ")";
+        databaseNoReturnValue(MainUI.connection, query3);
+        String query4 = "select * from operations order by createdAt desc limit 1;";
+        int operationId = databaseReturnInt(MainUI.connection, query4, "operationId");
+        // insert chapter
+        String query5 = "insert into chapters (operationId, newValue) values"
+                       + "(" + operationId + ", \'" + s + "\');";
+        System.out.println(query5);
+        databaseNoReturnValue(MainUI.connection, query5);
     }//GEN-LAST:event_InsertMenuNewChapterActionPerformed
-
+    
+    private void InsertMenuNewSectionActionPerformed(java.awt.event.ActionEvent evt) {                                                     
+        // get the text of the section
+        String s = jTextArea1.getSelectedText();
+        // get operationId
+        String query1 = "select * from operationTypes where operationType = 'insert'";
+        int operationTypeId = databaseReturnInt(MainUI.connection, query1, "operationTypeId");
+        String query2 = "select * from constructs where constructType = 'section'";
+        int constructId = databaseReturnInt(MainUI.connection, query2, "constructId");
+        String query3 = "insert into operations (operationTypeId, constructId) values"
+                       + "(" + operationTypeId + "," + constructId + ")";
+        databaseNoReturnValue(MainUI.connection, query3);
+        String query4 = "select * from operations order by createdAt desc limit 1;";
+        int operationId = databaseReturnInt(MainUI.connection, query4, "operationId");
+        // insert section
+        // HOW TO FIND THE Chapter of the section?
+        String query5 = "insert into sections (operationId, newValue) values"
+                       + "(" + operationId + ", \'" + s + "\');";
+        System.out.println(query5);
+        databaseNoReturnValue(MainUI.connection, query5);
+        System.out.println("hi im dunya");
+    } 
+    
     private void UndoMenuSelectedEditsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuSelectedEditsActionPerformed
-        // TODO add your handling code here:
+        System.out.println("hello i am here");
+        // NEED TO FIND OUT HOW TO KNOW WHICH BOXES WERE CHECKED !!!
+        String query = "select * from constructs where constructType = 'word'";
+        String s = databaseReturnString(MainUI.connection, query, "constructType");
+        System.out.println(s);
     }//GEN-LAST:event_UndoMenuSelectedEditsActionPerformed
 
     private void UndoMenuLastChapterEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuLastChapterEditActionPerformed
-        // TODO add your handling code here:
+        // find last chapter edit
+        String query1 = "select c.* from chapters c left join operations o on " 
+                      + "c.operationId = o.operationId order by o.createdAt desc limit 1";
+        int operationId = databaseReturnInt(MainUI.connection, query1, "operationId");
+        int chapterId = databaseReturnInt(MainUI.connection, query1, "chapterId");
+        // find the sections in the chapter
+        String query2 = "select * from sections where chapterId = " + chapterId;
+        int sectionId = databaseReturnInt(MainUI.connection, query2, "sectionId");
+        System.out.println(sectionId);
+        // find the paragraphs in the chapter
+        String query3 = "select * from paragraphs where sectionId IN (" + sectionId + ")";
+        int paragraphId = databaseReturnInt(MainUI.connection, query3, "paragraphId");
+        // find the sentences in the chapter 
+        String query4 = "select * from sentences where paragraphId IN (" + paragraphId + ")";
+        int sentenceId = databaseReturnInt(MainUI.connection, query4, "sentenceId");
+        // find the words in the chapter
+        String query5 = "select * from words where sentenceId IN (" + sentenceId + ")";
+        int wordId = databaseReturnInt(MainUI.connection, query4, "wordId");
+        
+//        if exists(wordId) {
+//            String query6 = "delete from words where wordId = " + wordId;
+//            databaseNoReturnValue(MainUI.connection, query6);
+//        }
+//        
+//        if sentenceId {
+//            String query7 = "delete from sentences where sentenceId = " + sentenceId;
+//            databaseNoReturnValue(MainUI.connection, query7);
+//        }
+//        
+//        if paragraphId {
+//            String query8 = "delete from paragraphs where paragraphId = " + paragraphId;
+//            databaseNoReturnValue(MainUI.connection, query8);
+//        }
+//        
+//        if sectionId {
+//            String query9 = "delete from sections where sectionId = " + sectionId;
+//            databaseNoReturnValue(MainUI.connection, query9);
+//        }
+//        
+//        String query10 = "delete from chapters where chapterId = " + chapterId;
+//        databaseNoReturnValue(MainUI.connection, query10);
     }//GEN-LAST:event_UndoMenuLastChapterEditActionPerformed
+    
+     private void UndoMenuLastSectionEditActionPerformed(java.awt.event.ActionEvent evt) {                                                        
+        // find last section edit
+        String query1 = "select * from sections s left join operations s on" 
+                      + "c.operationId = o.operationId order by o.createdAt desc limit 1";
+        int operationId = databaseReturnInt(MainUI.connection, query1, "operationId");
+        int chapterId = databaseReturnInt(MainUI.connection, query1, "sectionId");
+        // delete last chapter edit 
+        String query2 = "delete from chapters where chapterId = " + chapterId;
+        databaseNoReturnValue(MainUI.connection, query2);
+        String query3 = "delete from operations where operationId = " + operationId;
+        databaseNoReturnValue(MainUI.connection, query3);
+    }                                                       
 
+    
     private void DeleteMenuSelectedEditsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMenuSelectedEditsActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_DeleteMenuSelectedEditsActionPerformed
 
+    private void ComboBoxWordsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxWordsActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_ComboBoxWordsActionPerformed
+    // custom handler to handle all BACKSPACE and DELETE events in the application
+    
     private void FileMenuOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileMenuOpenActionPerformed
         String ingest = null;
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -593,7 +777,7 @@ public class MainUI extends javax.swing.JFrame {
                     String line = scan.nextLine() + "\n";
                     ingest = ingest + line;
                 }
-                jTextArea.setText(ingest);
+                jTextArea1.setText(ingest);
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
@@ -624,15 +808,27 @@ public class MainUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_HelpMenuReportBugActionPerformed
 
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {
+        this.previousText = jTextArea1.getText();
+    }
+    
+    private void wordParser(){
+         String[] parsedWords = this.previousText.split(" ");
+         
+    }
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        /* initialize the database */
+        MainUI.connection = DatabaseConnection.getConnection();
+        
+        /* apply Nimbus theme */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -729,6 +925,51 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JTextArea jTextArea;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+
+    /* Doucment Listener Overrides */
+    
+    private ArrayList<Word> words = new ArrayList<>();
+    private ArrayList<Sentence> sentences = new ArrayList<>();
+     
+    
+    @Override
+    public void insertUpdate(DocumentEvent ev) {
+        
+        if(ev.getLength() != 1){
+            return;
+        }
+        
+        int pos = ev.getOffset();
+        
+        String content = "";
+        
+        try {
+            content = jTextArea1.getText(0, pos + 1);
+            System.out.println(content);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void removeUpdate(DocumentEvent ev) {
+        // can for removals in the document
+        if(ev.getLength() != 1) {
+            return;
+        }
+        
+        if(this.previousText != null){
+            String removedStr = previousText.substring(ev.getOffset(), ev.getOffset() + ev.getLength());
+            System.out.println("ev.getOffset()=" + ev.getOffset() + " ev.getLength()=" + ev.getLength());
+            System.out.println("text in jTextArea1=" + this.previousText);
+            System.out.println("removedStr=" + removedStr);
+        }
+    }
+
+    @Override
+    public void changedUpdate(DocumentEvent ev) {
+        
+    }
 }
