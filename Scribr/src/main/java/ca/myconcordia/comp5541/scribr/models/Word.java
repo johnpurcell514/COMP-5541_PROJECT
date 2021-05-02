@@ -48,7 +48,21 @@ public class Word {
         result = prime * result + index + this.word.hashCode();
         return result;
     }
-
+//    Azman Equals
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//
+//        if (o == null || this.getClass() != o.getClass()) {
+//            return false;
+//        }
+//
+//        Word otherWord = (Word) o;
+//        return ((this.word.equals(otherWord.word)) && (this.sentenceId == otherWord.sentenceId));
+//    }
+    // Raj Equals
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

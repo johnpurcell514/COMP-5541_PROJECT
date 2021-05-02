@@ -57,17 +57,17 @@ public class SentenceTest {
         assertEquals(true, sentence.getSentence().contains(word));
     }
 
-    /**
-     * Test of getIndex method, of class Sentence.
-     */
-    @Test
-    @Order(2)
-    public void testGetIndex() {
-        System.out.println("getIndex");
-        sentence.setIndex(SENTENCE_INDEX);
-        assertEquals(SENTENCE_INDEX, sentence.getIndex());
-        // TODO review the generated test code and remove the default call to fail.
-    }
+//    /**
+//     * Test of getIndex method, of class Sentence.
+//     */
+//    @Test
+//    @Order(2)
+//    public void testGetIndex() {
+//        System.out.println("getIndex");
+//        sentence.setIndex(SENTENCE_INDEX);
+//        assertEquals(SENTENCE_INDEX, sentence.getIndex());
+//        // TODO review the generated test code and remove the default call to fail.
+//    }
 
     /**
      * Test of getSentence method, of class Sentence.

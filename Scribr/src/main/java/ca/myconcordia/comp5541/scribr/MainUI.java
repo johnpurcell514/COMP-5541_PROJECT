@@ -42,6 +42,9 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     private CustomStack<Word> wordsStack = new CustomStack<Word>(5);
     private CustomStack<Sentence> sentenceStack = new CustomStack<Sentence>(5);
     private String previousText = null;
+    // keep track of Word and Sentence objects
+    private ArrayList<Word> words = new ArrayList<>();
+    private ArrayList<Sentence> sentences = new ArrayList<>();
     
     
 
@@ -815,11 +818,6 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {
         this.previousText = jTextArea1.getText();
     }
-    
-    private void wordParser(){
-         String[] parsedWords = this.previousText.split(" ");
-         
-    }
 
     /**
      * @param args the command line arguments
@@ -930,10 +928,6 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
     /* Doucment Listener Overrides */
     
-    private ArrayList<Word> words = new ArrayList<>();
-    private ArrayList<Sentence> sentences = new ArrayList<>();
-     
-    
     @Override
     public void insertUpdate(DocumentEvent ev) {
         
@@ -946,11 +940,14 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         String content = "";
         
         try {
-            content = jTextArea1.getText(0, pos + 1);
-            System.out.println(content);
+            //content = jTextArea1.getText(0, pos + 1);
+            content = jTextArea1.getText();
+            System.out.println("content=" + content);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        wordParser(content);
     }
 
     @Override
@@ -971,5 +968,15 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     @Override
     public void changedUpdate(DocumentEvent ev) {
         
+    }
+    
+    private void wordParser(String textToParse){
+         String[] parsedWords = textToParse.split(" ");
+         this.words.clear();
+         for(int i = 0; i < parsedWords.length; i++) {
+             this.words.add(new Word(i, parsedWords[i]));
+         }
+         
+         System.out.println("words=" + this.words);
     }
 }
