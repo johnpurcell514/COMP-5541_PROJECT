@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Order;
 
 /**
  *
- * @author sarsingh
+ * @author Tom & Hugo
  */
 public class SentenceTest {
     
