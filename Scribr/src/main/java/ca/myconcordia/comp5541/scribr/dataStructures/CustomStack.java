@@ -5,6 +5,8 @@
  */
 package ca.myconcordia.comp5541.scribr.dataStructures;
 
+import java.lang.reflect.Array;
+
 /**
  *
  * @author sarsingh
@@ -15,16 +17,19 @@ public class CustomStack<T> {
     private T[] stack;
     private int size;
     private int top;
+    private Class<T> tclass;
 
-    public CustomStack(int size) {
-        this.stack = (T[]) new Object[size];
+    public CustomStack(int size, Class<T> tclass) {
+        //this.stack = (T[]) new Object[size];
+        this.tclass = tclass;
         this.top = 0;
         this.size = size;
+        this.stack = (T[]) Array.newInstance(tclass, size);
     }
 
     public void push(T obj) {
         if (top >= size) {
-            T[] newStack = (T[]) new Object[size];
+            T[] newStack = (T[]) Array.newInstance(tclass, size);
             for (int i = 1; i < size; i++) {
                 newStack[i - 1] = stack[i];
             }
@@ -43,7 +48,7 @@ public class CustomStack<T> {
         return obj;
     }
 
-    // bubble NULLs to top of stack
+    // left shift all elements and bubble NULLs to top of stack
     public T popAtIndex(int index) {
         if (top < 0)
             throw new IndexOutOfBoundsException();
@@ -69,10 +74,24 @@ public class CustomStack<T> {
     public int getSize() {
         return this.size;
     }
-
-    public void display() {
-        for (int i = 0; i < size; i++) {
-            System.out.println(stack[i]);
+    
+    public T[] getStack() {
+        return this.stack;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("STACK=[");
+        for(int i = 0; i < size; i++){
+            if(i != size-1){
+                sb.append(stack[i]);
+                sb.append(", ");
+            } else {
+                sb.append(stack[i]);
+            }
         }
+        sb.append("]");
+        return sb.toString();
     }
 }

@@ -24,11 +24,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.awt.Desktop;
+import java.awt.event.KeyEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JCheckBox;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -39,8 +41,8 @@ import javax.swing.event.DocumentListener;
 public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
     private static Connection connection;
-    private CustomStack<Word> wordsStack = new CustomStack<Word>(5);
-    private CustomStack<Sentence> sentenceStack = new CustomStack<Sentence>(5);
+    private CustomStack<Word> wordsStack = new CustomStack<Word>(5, Word.class);
+    //private CustomStack<Sentence> sentenceStack = new CustomStack<Sentence>(5);
     private String previousText = null;
     // keep track of Word and Sentence objects
     private ArrayList<Word> words = new ArrayList<>();
@@ -142,20 +144,11 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
 
         jPanel_WordEdits.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Words", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
 
-        jCheckBox1.setText("jCheckBox1");
         jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBox1ActionPerformed(evt);
             }
         });
-
-        jCheckBox2.setText("jCheckBox1");
-
-        jCheckBox3.setText("jCheckBox1");
-
-        jCheckBox4.setText("jCheckBox1");
-
-        jCheckBox5.setText("jCheckBox5");
 
         javax.swing.GroupLayout jPanel_WordEditsLayout = new javax.swing.GroupLayout(jPanel_WordEdits);
         jPanel_WordEdits.setLayout(jPanel_WordEditsLayout);
@@ -367,7 +360,9 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         jScrollPane2.setViewportView(jPanel_SideMenu);
 
         jTextArea1.setColumns(20);
+        jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
+        jTextArea1.setWrapStyleWord(true);
         jTextArea1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextArea1KeyPressed(evt);
@@ -688,11 +683,13 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
     } 
     
     private void UndoMenuSelectedEditsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuSelectedEditsActionPerformed
-        System.out.println("hello i am here");
-        // NEED TO FIND OUT HOW TO KNOW WHICH BOXES WERE CHECKED !!!
-        String query = "select * from constructs where constructType = 'word'";
-        String s = databaseReturnString(MainUI.connection, query, "constructType");
-        System.out.println(s);
+//        System.out.println("hello i am here");
+//        // NEED TO FIND OUT HOW TO KNOW WHICH BOXES WERE CHECKED !!!
+//        String query = "select * from constructs where constructType = 'word'";
+//        String s = databaseReturnString(MainUI.connection, query, "constructType");
+//        System.out.println(s);
+          System.out.println("UNDO SELECTED");
+          undoSelectedWords();
     }//GEN-LAST:event_UndoMenuSelectedEditsActionPerformed
 
     private void UndoMenuLastChapterEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoMenuLastChapterEditActionPerformed
@@ -815,9 +812,6 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
-    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {
-        this.previousText = jTextArea1.getText();
-    }
 
     /**
      * @param args the command line arguments
@@ -935,19 +929,19 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
             return;
         }
         
-        int pos = ev.getOffset();
-        
-        String content = "";
-        
-        try {
-            //content = jTextArea1.getText(0, pos + 1);
-            content = jTextArea1.getText();
-            System.out.println("content=" + content);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        wordParser(content);
+//        int pos = ev.getOffset();
+//        
+//        String content = "";
+//        
+//        try {
+//            //content = jTextArea1.getText(0, pos + 1);
+//            content = jTextArea1.getText();
+//            //System.out.println("content=" + content);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        
+//        wordParser(content);
     }
 
     @Override
@@ -970,13 +964,106 @@ public class MainUI extends javax.swing.JFrame implements DocumentListener {
         
     }
     
-    private void wordParser(String textToParse){
-         String[] parsedWords = textToParse.split(" ");
-         this.words.clear();
+    // parse Words from jTextArea1
+    // this subroutine will modify jCheckBox[1..5]
+    private void wordParser(){
+         String[] parsedWords = jTextArea1.getText().split(" ");
+         //this.words.clear();
          for(int i = 0; i < parsedWords.length; i++) {
-             this.words.add(new Word(i, parsedWords[i]));
+             Word newWord = new Word(i, parsedWords[i]);
+             if(!this.words.contains(newWord)){
+                 this.words.add(newWord);
+             }
          }
-         
-         System.out.println("words=" + this.words);
+         // push last element from this.words to the Words Stack
+         this.wordsStack.push(this.words.get(words.size()-1));
+         //System.out.println(wordsStack);
+         wordsCheckBoxHelper();
+    }
+    
+    // helper subroutine to modify jCheckBox[1..5] <- FOR WORDS ONLY
+    private void wordsCheckBoxHelper() {
+        javax.swing.JCheckBox[] wordsCheckBoxes = {jCheckBox1, jCheckBox2, jCheckBox3, jCheckBox4, jCheckBox5}; 
+        Word[] wordsFromStack = this.wordsStack.getStack();
+        for(int i = 0; i < wordsFromStack.length; i++){
+            if(wordsFromStack[i] != null){
+                wordsCheckBoxes[i].setText(wordsFromStack[i].getWord());
+            } else {
+                wordsCheckBoxes[i].setText(null);
+            }
+        }
+    }
+    
+    // action from jTextArea
+    private void jTextArea1KeyPressed(java.awt.event.KeyEvent evt) {
+        switch(evt.getKeyChar()){
+            case KeyEvent.VK_SPACE:
+                wordParser();
+                break;
+            default:
+                break;
+        }
+    }
+    
+    /* UNDO FUNCTIONS START HERE */
+    private void undoSelectedWords() {
+        // step 1 - get all words from jTextArea
+        ArrayList<Word> allWords = new ArrayList<>();
+        String[] parsedWords;
+        if(jTextArea1.getText().trim().equals(" ")){
+            parsedWords = new String[0];
+        } else {
+            parsedWords = jTextArea1.getText().trim().split(" ");
+        }
+        StringBuilder sb = new StringBuilder();
+        // get all words checkBoxes
+        javax.swing.JCheckBox[] wordsCheckBoxes = {jCheckBox1, jCheckBox2, jCheckBox3, jCheckBox4, jCheckBox5};
+        
+        if(parsedWords.length > 0){
+            for(int i = 0; i < parsedWords.length; i++){
+                allWords.add(new Word(i, parsedWords[i]));
+            }
+        }
+        
+        for(int i = 0; i < wordsCheckBoxes.length; i++) {
+            if(wordsCheckBoxes[i].isSelected()){
+                Word wordFromStack = this.wordsStack.popAtIndex(i);
+                //allWords.add(new Word(wordFromStack.getIndex(), wordFromStack.getWord()));
+                wordFillAndSet(wordFromStack.getIndex(), wordFromStack, allWords);
+                
+                // set word checkbox checkmark to false after processing
+                wordsCheckBoxes[i].setSelected(false);
+                wordsCheckBoxes[i].setText(null);
+            }
+        }
+        
+        // repopulate word Checkboxes after UNDOs
+        wordsCheckBoxHelper();
+        
+        // rebuild jTextArea text with word sequence found in allWords
+        for(int i = 0; i < allWords.size(); i++) {
+            if(allWords.get(i) != null){
+                if(i != allWords.size()-1){
+                    sb.append(allWords.get(i).getWord());
+                    sb.append(" ");
+                } else {
+                    sb.append(allWords.get(i).getWord());
+                }   
+            }
+        }
+        
+        // set jTextArea with newly modified text
+        jTextArea1.setText(sb.toString().trim());
+    }
+    
+    private void wordFillAndSet(int index, Word word, ArrayList<Word> list) {        
+        if(index > (list.size() - 1)){
+            for(int i = list.size()-1; i < index; i++) {
+                list.add(i, null);
+            }
+            list.add(index, word);
+        } else {
+            list.set(index, word);
+        }
     }
 }

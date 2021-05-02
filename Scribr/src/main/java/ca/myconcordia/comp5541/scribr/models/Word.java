@@ -77,6 +77,6 @@ public class Word {
 
         Word other = (Word) obj;
 
-        return this.word.equals(other.getWord());
+        return (this.word.equals(other.getWord()) && this.index == other.getIndex());
     }
 }
