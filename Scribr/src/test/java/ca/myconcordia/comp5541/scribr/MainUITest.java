@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  *
- * @author sarsingh
+ * @author Tom & Hugo
  */
 public class MainUITest {
     
